@@ -45,4 +45,33 @@ Once you're done setting up your metadata monitoring please wait for a while. A 
 
 Now we have done the metadata collection! 
 
-## 2. Creating 
+## 2. Data Lineage Parsing
+Now after we are done with the metadata collection this is where we can do the data lineage parsing. The parsing itself can be done in two different ways.
+
+a. Automatic Parsing
+
+In this mode, you don't have to do anything. If you write a standard script, the system "reads" your code and draws the map for you.
+
+How does it work ? 
+If you use an INSERT INTO or CREATE TABLE AS command, the system realizes, "Aha! Table A is moving into Table B," and draws the line.
+
+The Big Catch: It only works for specific services:
+1. DWS & MRS (Hive/Flink): Standard SQL commands.
+2. CDM: When you migrate files between databases.
+3. OBS: When you move files between folders or buckets.
+
+The Rule: Your SQL scripts cannot have semicolons (;) inside a single node if you want the system to parse it automatically.
+
+b. Manual Parsing
+
+Sometimes the system isn't "smart" enough to read your code—specifically with Spark or Python jobs. Since the logic in those jobs can be very complex, the system asks you to label the inputs and outputs yourself.
+
+When to use it: Use this for MRS Spark, Python, or REST Client nodes ? 
+
+How to do it:
+1. Open your job in Data Development.
+2. Click on the specific node (like your Spark node).
+3. Look for a tab called lineageInfo.
+4. Manually pick your Input (where the data comes from) and Output (where the data goes).
+
+## 3. Viewing Data Lineage
