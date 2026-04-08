@@ -46,9 +46,12 @@ Once you're done setting up your metadata monitoring please wait for a while. A 
 Now we have done the metadata collection! 
 
 ## 2. Data Lineage Parsing
-Now after we are done with the metadata collection this is where we can do the data lineage parsing. The parsing itself can be done in two different ways.
+Now after we are done with the metadata collection this is where we can move to the next part. In DataArts we can see the lineage based on the nodes available in Huawei Cloud. And to see the relation of these nodes there are a thing called data lineage parsing, this process itself can be done in two different ways.
 
-a. Automatic Parsing
+But before that we must talk about nodes in DataArts Factory.
+A node defines the operations performed on data. DataArts Factory provides nodes used for data integration, database operations, resource management, and computing and analysis. You can choose your desired nodes.
+
+### A. Automatic Parsing
 
 In this mode, you don't have to do anything. If you write a standard script, the system "reads" your code and draws the map for you.
 
@@ -62,7 +65,34 @@ The Big Catch: It only works for specific services:
 
 The Rule: Your SQL scripts cannot have semicolons (;) inside a single node if you want the system to parse it automatically.
 
-b. Manual Parsing
+#### - Creating an Automatic Parsing
+1. Create the Job in DataArts Factory
+
+Before we can actually see the process we need to create the worker node itself , and you can do this by going to the DataArts Factory and then clicking develop jobs.
+
+<img width="587" height="656" alt="image" src="https://github.com/user-attachments/assets/92a69c42-ef72-4880-8b6a-38e40a62afab" />
+
+Be sure to pick the pipeline one so we can make nodes with lineages.
+
+2. Setting Up the Node Parameters
+
+After you create a job you can try to make nodes now. Each services have their own node configuration. You can refer to this link for further information regarding about it : https://support.huaweicloud.com/intl/en-us/usermanual-dataartsstudio/dataartsstudio_01_0441.html
+
+For now let's try to do a DLI node, now if you have succesfully created a job you should be able to see some of the services. You can drag and drop these services to the right side. 
+
+<img width="1912" height="865" alt="image" src="https://github.com/user-attachments/assets/32768119-9a55-4b26-8460-c7426b5ae2a7" />
+
+Now in this example i will be trying to use a DLI node, now let's try inserting according to the the input form at the right side of your screen. Please do note that DataArts will monitor according to your SQL statement here i inserted this SQL to see tables that are available in one database in DataArts
+
+```
+SHOW TABLES IN dummy_data;
+```
+
+Once you've filled up your form then you can press start, it should be able to run
+
+<img width="1391" height="871" alt="image" src="https://github.com/user-attachments/assets/2d7aadf3-fe9e-4c76-b21a-ecaf6a82abc9" />
+
+### B. Manual Parsing
 
 Sometimes the system isn't "smart" enough to read your code—specifically with Spark or Python jobs. Since the logic in those jobs can be very complex, the system asks you to label the inputs and outputs yourself.
 
@@ -73,5 +103,9 @@ How to do it:
 2. Click on the specific node (like your Spark node).
 3. Look for a tab called lineageInfo.
 4. Manually pick your Input (where the data comes from) and Output (where the data goes).
+
+## 3. Seeing Data Lineage
+
+Once you have made sure your metadata is done collecting and you already ran a job in you dataArts factory, we can try going back to dataArts Catalog to see your table lineage. 
 
 ## 3. Viewing Data Lineage
