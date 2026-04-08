@@ -2,6 +2,19 @@
 DataArts is basically a one stop data governance platform where you can do many things. If you want to manage, audit, usually you'd do it in this platform
 In this page we will focus on how to see data lineage of your table, usually you'd want to see this if you want to track where you tables have been, and what have been modified and so on. 
 
+But first let's try to understand what is data-lineage? 
+
+Data lineage is the process of tracking, recording, and visualizing data’s entire journey—from origin, through transformations, to final consumption.
+In an easier understanding- it's when you want to see where your tables have been the entirity of it's life.
+
+To see your data lineage there are some things that you need to set up
+
+a. Complete metadata collection: In the data catalog component, a metadata collection task must be created and run for the data table whose lineage you want to view.
+b. Successful job scheduling: The data development job must meet the automatic lineage resolution requirements or have been manually configured with lineages, and a formal scheduling operation must be performed (test runs are invalid).
+c. After successful scheduling, the lineage relationship will be generated in approximately 1 minute.
+
+Now let's try setting up and start the process!
+
 ## Initial Setup
 Before we start into the DataArts itself please do note in Huawei Cloud DataArts we can only see data from Huawei Cloud's native products. So for example you'd want to track external data from outside of this environment, the DataArts cannot track it and will only track this data when it's inside of the Huawei's storage service. 
 
@@ -18,10 +31,14 @@ Once you've clicked the collection task , you will see that you can create some 
 
 <img width="1853" height="846" alt="image" src="https://github.com/user-attachments/assets/f5f2ec58-3575-4213-9224-4329f28a36a4" />
 
-Now once you click "NEXT" you will see that you can try to change the scheduling, this is basically how often DataArts will capture the movement of your data. 
-You can make this a reocurring this by clicking the repeating part
+Now once you click "NEXT" you will see that you can try to change the scheduling, this is basically how often DataArts will capture the metadata from your source. It basically defines when and how often the DataArts system connects to data sources. You can make this a reocurring this by clicking the repeating part.
 
 <img width="1023" height="256" alt="image" src="https://github.com/user-attachments/assets/07bd6e04-c925-4130-9fcc-72d0af11d889" />
 
+Once you're done setting up your metadata monitoring please wait for a while. A successful monitoring can be seen through the task monitoring section of the DataArts catalog, and if it's still "running" in this page, then it means it's still doing well. The only time you need to stop and fix your metadata collection job, is if you see a failed status, other than that you are fine. Please refer to the picture below to see what im talking about. 
+
+<img width="1707" height="633" alt="image" src="https://github.com/user-attachments/assets/adc928aa-42a8-4f52-b75c-31d019d55d32" />
+
+Now we have done the metadata collection! 
 
 ## 2. Creating 
