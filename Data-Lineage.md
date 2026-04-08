@@ -88,7 +88,9 @@ Now in this example i will be trying to use a DLI node, now let's try inserting 
 SHOW TABLES IN dummy_data;
 ```
 
-Once you've filled up your form then you can press start, it should be able to run
+Once you've filled up your form then you can try to test it first. 
+
+**Please do note, if you want your job to run you need to click submit and then execute** This will tell datarts "hey the testing is fine , let's deploy it".
 
 <img width="1391" height="871" alt="image" src="https://github.com/user-attachments/assets/2d7aadf3-fe9e-4c76-b21a-ecaf6a82abc9" />
 
