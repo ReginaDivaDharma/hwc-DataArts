@@ -7,10 +7,14 @@ But first let's try to understand what is data-lineage?
 Data lineage is the process of tracking, recording, and visualizing data’s entire journey—from origin, through transformations, to final consumption.
 In an easier understanding- it's when you want to see where your tables have been the entirity of it's life.
 
+<img width="1213" height="486" alt="image" src="https://github.com/user-attachments/assets/0b6bdb0a-9e99-4219-a113-fae2f9e204c2" />
+
 To see your data lineage there are some things that you need to set up
 
 a. Complete metadata collection: In the data catalog component, a metadata collection task must be created and run for the data table whose lineage you want to view.
+
 b. Successful job scheduling: The data development job must meet the automatic lineage resolution requirements or have been manually configured with lineages, and a formal scheduling operation must be performed (test runs are invalid).
+
 c. After successful scheduling, the lineage relationship will be generated in approximately 1 minute.
 
 Now let's try setting up and start the process!
@@ -20,7 +24,7 @@ Before we start into the DataArts itself please do note in Huawei Cloud DataArts
 
 So before we start please prepare the sources that you'd want to monitor, for example you want to monitor a specific landing folder in OBS , please prepare that path.
 
-## 1. Creating a Monitoring Task
+## 1. Creating a Incremental Metadata Collection Task
 First thing to do when you want to see your data lineage is actually creating a monitoring task for dataArts, this is so they can "see" what's happening to your data. 
 Once you go to the DataArts product page, please click on the DataArts catalog. At first landing in this page won't really show you anything because we havent created a metadata collection. This job will be the main point on how we can get the data itself from your huawei cloud service to DataArts. 
 
