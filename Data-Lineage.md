@@ -1,113 +1,144 @@
-# Introduction
-DataArts is basically a one stop data governance platform where you can do many things. If you want to manage, audit, usually you'd do it in this platform
-In this page we will focus on how to see data lineage of your table, usually you'd want to see this if you want to track where you tables have been, and what have been modified and so on. 
+# Viewing Data Lineage in Huawei Cloud DataArts
 
-But first let's try to understand what is data-lineage? 
+## Introduction
 
-Data lineage is the process of tracking, recording, and visualizing data’s entire journey—from origin, through transformations, to final consumption.
-In an easier understanding- it's when you want to see where your tables have been the entirity of it's life.
+DataArts Studio is a one-stop data governance platform. If you need to manage, audit, or track data assets, this is where you do it.
 
-<img width="1213" height="486" alt="image" src="https://github.com/user-attachments/assets/0b6bdb0a-9e99-4219-a113-fae2f9e204c2" />
+This guide focuses on **data lineage** — how to see where a table has been and what has modified it over its lifetime.
 
-To see your data lineage there are some things that you need to set up
+### What is data lineage?
 
-a. Complete metadata collection: In the data catalog component, a metadata collection task must be created and run for the data table whose lineage you want to view.
+Data lineage is the process of tracking, recording, and visualizing a dataset's entire journey — from origin, through transformations, to final consumption. Put simply: it shows everywhere your table has been across its whole life.
 
-b. Successful job scheduling: The data development job must meet the automatic lineage resolution requirements or have been manually configured with lineages, and a formal scheduling operation must be performed (test runs are invalid).
+<img width="1213" height="486" alt="Data lineage overview" src="https://github.com/user-attachments/assets/0b6bdb0a-9e99-4219-a113-fae2f9e204c2" />
 
-c. After successful scheduling, the lineage relationship will be generated in approximately 1 minute.
+---
 
-Now let's try setting up and start the process!
+## Prerequisites
 
-## Initial Setup
-Before we start into the DataArts itself please do note in Huawei Cloud DataArts we can only see data from Huawei Cloud's native products. So for example you'd want to track external data from outside of this environment, the DataArts cannot track it and will only track this data when it's inside of the Huawei's storage service. 
+Lineage will not appear unless all three conditions are met:
 
-So before we start please prepare the sources that you'd want to monitor, for example you want to monitor a specific landing folder in OBS , please prepare that path.
+| # | Requirement | Detail |
+|---|---|---|
+| 1 | **Metadata collection completed** | A metadata collection task must be created and run in DataArts Catalog for the table whose lineage you want to view. |
+| 2 | **Job scheduled successfully** | The DataArts Factory job must either meet the automatic lineage parsing requirements or have lineage configured manually — and it must be **formally scheduled**. Test runs do not generate lineage. |
+| 3 | **Wait for generation** | After a successful scheduling run, the lineage relationship appears in roughly 1 minute. |
 
-## 1. Creating a Incremental Metadata Collection Task
-First thing to do when you want to see your data lineage is actually creating a monitoring task for dataArts, this is so they can "see" what's happening to your data. 
-Once you go to the DataArts product page, please click on the DataArts catalog. At first landing in this page won't really show you anything because we havent created a metadata collection. This job will be the main point on how we can get the data itself from your huawei cloud service to DataArts. 
+> **Scope limitation:** DataArts can only see data held in Huawei Cloud native services. External data is invisible to it until that data lands inside a Huawei Cloud storage or compute service.
 
-Now on your left side of the navigation panel in DataArts Catalog there should be something called a 'Collection Task' , now let's jump into this section
-<img width="1916" height="397" alt="image" src="https://github.com/user-attachments/assets/cb6461f7-6495-4718-9f31-7e9c990c0ced" />
+Before starting, prepare the sources you want to monitor — for example, the exact OBS path of the landing folder you intend to track.
 
-Once you've clicked the collection task , you will see that you can create some sort of task, here i'd like to highlight again, alot of the sources can be seen if you click on the connection data connection type, here you will see many different huawei cloud products, usually we use big data in dataArts but you will see many databases and bucket as well, please do pick it in regard to your own scenario. Please note that some services will let you need to make a data connection first. 
+---
 
-<img width="1853" height="846" alt="image" src="https://github.com/user-attachments/assets/f5f2ec58-3575-4213-9224-4329f28a36a4" />
+## 1. Create an Incremental Metadata Collection Task
 
-Now once you click "NEXT" you will see that you can try to change the scheduling, this is basically how often DataArts will capture the metadata from your source. It basically defines when and how often the DataArts system connects to data sources. You can make this a reocurring this by clicking the repeating part.
+The collection task is how DataArts "sees" what is happening to your data. Without it, DataArts Catalog stays empty.
 
-<img width="1023" height="256" alt="image" src="https://github.com/user-attachments/assets/07bd6e04-c925-4130-9fcc-72d0af11d889" />
+**Steps**
 
-Once you're done setting up your metadata monitoring please wait for a while. A successful monitoring can be seen through the task monitoring section of the DataArts catalog, and if it's still "running" in this page, then it means it's still doing well. The only time you need to stop and fix your metadata collection job, is if you see a failed status, other than that you are fine. Please refer to the picture below to see what im talking about. 
+1. Open the **DataArts Catalog** component.
+2. In the left navigation panel, go to **Collection Task**.
 
-<img width="1707" height="633" alt="image" src="https://github.com/user-attachments/assets/adc928aa-42a8-4f52-b75c-31d019d55d32" />
+   <img width="1916" height="397" alt="Collection Task in the left nav" src="https://github.com/user-attachments/assets/cb6461f7-6495-4718-9f31-7e9c990c0ced" />
 
-Now we have done the metadata collection! 
+3. Create a new task and choose your **data connection type**. This dropdown lists the supported Huawei Cloud products — big data services are the most common choice here, but databases and buckets are also available. Pick according to your own scenario.
+
+   > Some services require you to create a **data connection** first before they appear as a valid source.
+
+   <img width="1853" height="846" alt="Selecting the data connection type" src="https://github.com/user-attachments/assets/f5f2ec58-3575-4213-9224-4329f28a36a4" />
+
+4. Click **Next** and configure the **schedule**. This defines when and how often DataArts connects to the source to capture metadata. Enable the repeat option to make it recurring.
+
+   <img width="1023" height="256" alt="Schedule configuration" src="https://github.com/user-attachments/assets/07bd6e04-c925-4130-9fcc-72d0af11d889" />
+
+5. Wait for the task to run. Check progress under **Task Monitoring** in DataArts Catalog.
+
+   - **Running** — healthy, nothing to do.
+   - **Failed** — stop and fix the collection task before continuing.
+
+   <img width="1707" height="633" alt="Task monitoring status" src="https://github.com/user-attachments/assets/adc928aa-42a8-4f52-b75c-31d019d55d32" />
+
+Metadata collection is now in place.
+
+---
 
 ## 2. Data Lineage Parsing
-Now after we are done with the metadata collection this is where we can move to the next part. In DataArts we can see the lineage based on the nodes available in Huawei Cloud. And to see the relation of these nodes there are a thing called data lineage parsing, this process itself can be done in two different ways.
 
-But before that we must talk about nodes in DataArts Factory.
-A node defines the operations performed on data. DataArts Factory provides nodes used for data integration, database operations, resource management, and computing and analysis. You can choose your desired nodes.
+DataArts builds lineage from the **nodes** that run in DataArts Factory. A node defines an operation performed on data — DataArts Factory provides nodes for data integration, database operations, resource management, and compute/analysis.
 
-### A. Automatic Parsing
+There are two ways lineage gets parsed from those nodes.
 
-In this mode, you don't have to do anything. If you write a standard script, the system "reads" your code and draws the map for you.
+### A. Automatic parsing
 
-How does it work ? 
-If you use an INSERT INTO or CREATE TABLE AS command, the system realizes, "Aha! Table A is moving into Table B," and draws the line.
+You do nothing. If the script is standard, the system reads the code and draws the map for you.
 
-The Big Catch: It only works for specific services:
-1. DWS & MRS (Hive/Flink): Standard SQL commands.
-2. CDM: When you migrate files between databases.
-3. OBS: When you move files between folders or buckets.
+**How it works:** when you run `INSERT INTO` or `CREATE TABLE AS`, the system recognises that Table A is feeding Table B and draws the connection.
 
-The Rule: Your SQL scripts cannot have semicolons (;) inside a single node if you want the system to parse it automatically.
+**Supported services only:**
 
-#### - Creating an Automatic Parsing
-1. Create the Job in DataArts Factory
+- **DWS** and **MRS** (Hive / Flink) — standard SQL commands
+- **CDM** — when migrating files between databases
+- **OBS** — when moving files between folders or buckets
 
-Before we can actually see the process we need to create the worker node itself , and you can do this by going to the DataArts Factory and then clicking develop jobs.
+> **Rule:** a single node's SQL script must not contain semicolons (`;`) if you want automatic parsing to work.
 
-<img width="587" height="656" alt="image" src="https://github.com/user-attachments/assets/92a69c42-ef72-4880-8b6a-38e40a62afab" />
+#### Setting up automatic parsing
 
-Be sure to pick the pipeline one so we can make nodes with lineages.
+**1. Create the job in DataArts Factory**
 
-2. Setting Up the Node Parameters
+Go to **DataArts Factory → Develop Job**. Choose the **pipeline** job type so that nodes with lineage can be created.
 
-After you create a job you can try to make nodes now. Each services have their own node configuration. You can refer to this link for further information regarding about it : https://support.huaweicloud.com/intl/en-us/usermanual-dataartsstudio/dataartsstudio_01_0441.html
+<img width="587" height="656" alt="Develop Job in DataArts Factory" src="https://github.com/user-attachments/assets/92a69c42-ef72-4880-8b6a-38e40a62afab" />
 
-For now let's try to do a DLI node, now if you have succesfully created a job you should be able to see some of the services. You can drag and drop these services to the right side. 
+**2. Configure the node parameters**
 
-<img width="1912" height="865" alt="image" src="https://github.com/user-attachments/assets/32768119-9a55-4b26-8460-c7426b5ae2a7" />
+Each service has its own node configuration — see the [DataArts Studio node reference](https://support.huaweicloud.com/intl/en-us/usermanual-dataartsstudio/dataartsstudio_01_0441.html) for details.
 
-Now in this example i will be trying to use a DLI node, now let's try inserting according to the the input form at the right side of your screen. Please do note that DataArts will monitor according to your SQL statement here i inserted this SQL to see tables that are available in one database in DataArts
+Drag the service you want onto the canvas. In this example we use a **DLI node**.
 
+<img width="1912" height="865" alt="Dragging a node onto the canvas" src="https://github.com/user-attachments/assets/32768119-9a55-4b26-8460-c7426b5ae2a7" />
+
+Fill in the form on the right. DataArts parses lineage from the SQL statement you enter here. For example, to list the tables available in a database:
+
+```sql
+SHOW TABLES IN dummy_data
 ```
-SHOW TABLES IN dummy_data;
-```
 
-Once you've filled up your form then you can try to test it first. 
+Test the node once the form is complete.
 
-**Please do note, if you want your job to run you need to click submit and then execute** This will tell datarts "hey the testing is fine , let's deploy it".
+> **Important:** testing alone does not deploy anything. You must click **Submit**, then **Execute**, to tell DataArts the job is ready to run for real.
 
-<img width="1391" height="871" alt="image" src="https://github.com/user-attachments/assets/2d7aadf3-fe9e-4c76-b21a-ecaf6a82abc9" />
+<img width="1391" height="871" alt="Submit and execute the job" src="https://github.com/user-attachments/assets/2d7aadf3-fe9e-4c76-b21a-ecaf6a82abc9" />
 
-### B. Manual Parsing
+### B. Manual parsing
 
-Sometimes the system isn't "smart" enough to read your code—specifically with Spark or Python jobs. Since the logic in those jobs can be very complex, the system asks you to label the inputs and outputs yourself.
+For Spark and Python jobs the logic is often too complex for the system to read, so you label the inputs and outputs yourself.
 
-When to use it: Use this for MRS Spark, Python, or REST Client nodes ? 
+**When to use it:** MRS Spark, Python, and REST Client nodes.
 
-How to do it:
-1. Open your job in Data Development.
-2. Click on the specific node (like your Spark node).
-3. Look for a tab called lineageInfo.
-4. Manually pick your Input (where the data comes from) and Output (where the data goes).
+**Steps**
 
-## 3. Seeing Data Lineage
+1. Open your job in **Data Development**.
+2. Click the specific node (for example, your Spark node).
+3. Open the **lineageInfo** tab.
+4. Manually select the **Input** (where the data comes from) and the **Output** (where the data goes).
 
-Once you have made sure your metadata is done collecting and you already ran a job in you dataArts factory, we can try going back to dataArts Catalog to see your table lineage. 
+---
 
-## 3. Viewing Data Lineage
+## 3. Viewing the Data Lineage
+
+Once metadata collection has completed and the DataArts Factory job has been scheduled and run, return to **DataArts Catalog** and select the job or the output table. The lineage graph is displayed there.
+
+<img width="1853" height="667" alt="Data lineage view in DataArts Catalog" src="https://github.com/user-attachments/assets/cb0f5c96-5b5a-4327-8777-d4b8545bec7e" />
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause |
+|---|---|
+| Catalog is empty | No metadata collection task has been created or run. |
+| Collection task shows **Failed** | Check the data connection and source path, then rerun. |
+| Job ran but no lineage appears | The job was only **tested**, not submitted and executed. |
+| Automatic parsing produced nothing | Semicolons in the node's SQL, or the service is not one of DWS / MRS / CDM / OBS — use manual parsing instead. |
+| Table is not tracked at all | The data is not yet inside a Huawei Cloud native service. |
